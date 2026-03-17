@@ -1,42 +1,231 @@
+body {
+  margin: 0;
+  background: #16191f;
+  color: white;
+  font-family: sans-serif;
+}
+
+.content {
+  padding-top: 80px;  
+  padding-bottom: 100px;
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: calc(100vh - 180px);
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  right: 30px;
+}
+
+/* User Logo*/
+.user-icon img{
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  object-fit: cover;
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #20232A;
+  height: 70px;
+  border-radius: 30px;
+  align-items: center;
+
+  position: fixed;    
+  bottom: 20px;      
+  left: 20px;        
+  right: 20px;        
+  
+  z-index: 1000;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Button Navigation Bar */
+.bottom-nav button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.bottom-nav img {
+  width: 30px;
+  height: 30px;
+}
+
+/* Selected Button */
+.nav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.indicator {
+  width: 30px;
+  height: 3px;
+  background-color: #E2E2A1;
+  border-radius: 10px;
+  position: absolute;
+  top: -20px;
+  display: none;
+}
+
+.nav-item.active .indicator {
+  display: block;
+}
+
+
+/* Login */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh; 
+  padding: 0 40px;
+}
+
+.auth-header {
+  margin-bottom: 40px;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.auth-header h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.auth-subtitle {
+  font-size: 14px;
+  color: #8E8E93;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.auth-subtitle span {
+  color: #E2E2A1;
+  text-decoration: underline;
 }
 
+/* Forms */
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-input {
+  width: 100%;
+  max-width: 320px;
+  height: 55px;
+  background-color: #20232A;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 0 20px;
+  color: white;
+  margin-bottom: 15px;
+  font-size: 16px;
+  outline: none;
+}
+
+.auth-input::placeholder {
+  color: #636E7B;
+}
+
+/* Let's Go Button */
+.btn-primary {
+  margin-top: 20px;
+  background-color: #636e7ba4; 
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  transition: transform 0.1s ease-out, background-color 0.2s;
+  
+  white-space: nowrap;
+}
+
+.btn-primary:active {
+  transform: scale(0.96); 
+}
+
+/* Movies & Series Cards Films*/
 .card {
-  padding: 2em;
+  background-color: #20232A;
+  border-radius: 25px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  margin-bottom: 20px;
+
+  width: 100%;
+  max-width: 320px; 
+  box-sizing: border-box;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
+  
+  /* 2. Borda subtil para definir as arestas (efeito premium) */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  
+  /* 3. Transição suave para o efeito de toque */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.read-the-docs {
-  color: #888;
+/* Efeito ao carregar no telemóvel */
+.card:active {
+  transform: scale(0.97); 
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+}
+
+.card:hover {
+  transform: translateY(-2px); 
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  background-color: #2a2e37;
+}
+
+.arrow-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-icon img {
+  width: 100%; 
+  height: auto;
+  object-fit: contain;
 }
