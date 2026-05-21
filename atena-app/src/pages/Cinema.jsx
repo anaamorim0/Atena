@@ -3,9 +3,8 @@ import arrowIcon from '../assets/icons/arrow-icon.png'
 
 function Films() {
     return (
-        <div className="films">
-            <main className="content">
-                <Link to="/movies" className="card">
+        <div className="films-wrapper">
+                <Link to="/films" className="card">
                     <h2>Movies</h2>
                     <div className="arrow-icon">
                         <img src={arrowIcon} alt="Go" />
@@ -18,7 +17,6 @@ function Films() {
                         <img src={arrowIcon} alt="Go" />
                     </div>
                 </Link>
-            </main>
         </div>
     )
 }

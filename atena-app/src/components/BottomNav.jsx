@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import homeIcon from '../assets/icons/home-icon.png'
 import homeActiveIcon from '../assets/icons/home-active-icon.png'
 import moviesIcon from '../assets/icons/movies-icon.png'
@@ -11,6 +11,13 @@ import chatIcon from '../assets/icons/chat-icon.png'
 import chatActiveIcon from '../assets/icons/chat-active-icon.png'
 
 function BottomNav() {
+    const location = useLocation();
+
+    const isCinemaActive =
+    location.pathname === '/cinema' ||
+    location.pathname === '/films' ||
+    location.pathname === '/series';
+
     return (
         <nav className="bottom-nav">
             <NavLink to="/" className="nav-item">
@@ -22,11 +29,11 @@ function BottomNav() {
                 )}
             </NavLink>
             
-            <NavLink to="/films" className="nav-item">
-                {({ isActive }) => (
+            <NavLink to="/cinema" className={`nav-item ${isCinemaActive ? 'active' : ''}`}>
+                {() => (
                     <>
                         <div className="indicator"></div>
-                        <img src={isActive ? moviesActiveIcon : moviesIcon} alt="Movies" />
+                        <img src={isCinemaActive ? moviesActiveIcon : moviesIcon} alt="Cinema" />
                     </>
                 )}
             </NavLink>
