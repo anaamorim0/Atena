@@ -11,6 +11,7 @@ import Chats from './pages/Chats'
 import BottomNav from './components/BottomNav'
 import Header from './components/Header'
 import MovieDetails from './pages/MovieDetails'
+import MovieList from './components/MovieList'
 
 import MediaPage from './components/MediaPage'
 import { MOVIES_DATA } from './data/mockData'
@@ -18,7 +19,6 @@ import { MOVIES_DATA } from './data/mockData'
 // App.jsx
 function AppContent() {
   const location = useLocation();
-  // Adicionamos a página de detalhes à lista de páginas que escondem a Nav se quiseres foco total
   const hideNav = ['/login', '/signup'].includes(location.pathname); 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -32,11 +32,10 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/cinema" element={<Cinema />} />
-        <Route path="/films" element={<MediaPage title="Movies" searchQuery={searchQuery} />} />
+
+        <Route path="/films" element={<MediaPage title="Movies" searchQuery={searchQuery} />} />        
         <Route path="/series" element={<MediaPage title="Series" searchQuery={searchQuery}/>} />
-        
-        {/* NOVA ROTA: O ':id' é um parâmetro dinâmico que o React reconhece */}
-        <Route path="/movie/:id" element={<MovieDetails />} /> 
+        <Route path="/movie/:id" element={<MovieDetails />} />
 
         <Route path="/books" element={<Books />} />
         <Route path="/games" element={<Games />} />

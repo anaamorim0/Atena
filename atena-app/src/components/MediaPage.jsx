@@ -1,26 +1,53 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react'; 
 import { useNavigate } from 'react-router-dom';
-import { getPopularMovies } from '../services/tmdb'; // Verifica se o ficheiro é tmdb ou tmbd
-import MediaSection from '../components/MediaSection';
+import { getPopularMovies } from '../services/tmdb'; 
 
 function MediaPage({ searchQuery }) {
     const [movies, setMovies] = useState([]);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true); // Corrigido de loadin para loading
+    const [loading, setLoading] = useState(true); 
     const [filter, setFilter] = useState(null);
+    
+    const [page, setPage] = useState(1);
+    const [fetchingMore, setFetchingMore] = useState(false);
+    const loaderRef = useRef(null);
 
     useEffect(() => {
         const fetchMovies = async () => {
-            const data = await getPopularMovies();
-            console.log("Dados da API TMDB:", data); // ISTO MOSTRA TUDO NA CONSOLA
-            setMovies(data || []); 
+            if (page === 1) setLoading(true);
+            else setFetchingMore(true);
+
+            const data = await getPopularMovies(page); 
+            
+            setMovies((prevMovies) => [...prevMovies, ...(data || [])]); 
+            
             setLoading(false);
+            setFetchingMore(false);
         };
         fetchMovies();
-    }, []);
+    }, [page]); 
 
-    // FILTRAGEM SIMPLIFICADA PARA API:
-    // Filtramos a lista simples de filmes que vem do TMDB
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && !loading && !fetchingMore) {
+                    setPage((prevPage) => prevPage + 1); 
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        if (loaderRef.current) {
+            observer.observe(loaderRef.current);
+        }
+
+        return () => {
+            if (loaderRef.current) {
+                observer.unobserve(loaderRef.current);
+            }
+        };
+    }, [loading, fetchingMore]);
+
     const filteredMovies = movies.filter(movie => 
         movie.title?.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -44,18 +71,28 @@ function MediaPage({ searchQuery }) {
 
                 <div className="media-lists-container">
                     <div className="filtered-view">
-                        <div className="counter-card">
-                            <span className="count-number">{filteredMovies.length}</span>
-                            <span className="count-label">{filter || 'Popular Movies'}</span>
+                        <div className={filter ? "counter-card" : ""}>
+                            {filter && <span className="count-number">{filteredMovies.length}</span>}
+                            
+                            <span 
+                                className={filter ? "count-label" : ""}
+                                style={!filter ? { 
+                                    fontSize: '1rem', 
+                                    fontWeight: 'bold', 
+                                    color: '#8E8E93', 
+                                    display: 'block',
+                                    marginBottom: '20px'
+                                } : {}}
+                            >
+                                {filter || 'Popular Movies'}
+                            </span>
                         </div>
 
                         <div className="movies-grid">
-                            {filteredMovies.map(movie => (
+                            {filteredMovies.map((movie, index) => (
                                 <div 
-                                    key={movie.id} 
+                                    key={`${movie.id}-${index}`} 
                                     className="movie-card-grid"
-                                    /* 1. Adicionamos o evento de clique para navegar */
-                                    /* Enviamos o objeto 'movie' inteiro no estado da rota */
                                     onClick={() => navigate(`/movie/${movie.id}`, { state: { movie } })}
                                     style={{ cursor: 'pointer' }}
                                 >
@@ -65,6 +102,10 @@ function MediaPage({ searchQuery }) {
                                     />
                                 </div>
                             ))}
+                        </div>
+
+                        <div ref={loaderRef} style={{ height: "40px", margin: "20px 0", textAlign: "center" }}>
+                            {fetchingMore && <p style={{ color: '#aaa' }}>Loading more movies...</p>}
                         </div>
 
                         {filteredMovies.length === 0 && (
