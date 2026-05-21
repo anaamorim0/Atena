@@ -6,6 +6,7 @@ A modern, responsive web application built as an experimental project to advance
 - Build Tool: Vite
 
 ## Project Structure
+```
 atena-app/
 ├── public/              # Static assets
 ├── src/
@@ -16,6 +17,7 @@ atena-app/
 ├── .env     
 ├── .gitignore           # Safeguards local environment credentials
 └── vite.config.ts       # Development and build tool configurations
+```
 
 ## Getting Started
 ### Prerequisites
@@ -31,10 +33,14 @@ npm install
 
 ### 2. Run the Development Server
 Start the local server to test the application:
+
 ```npm run dev```
+
 The application will be accessible locally at: ```http://localhost:5173```
 
 ### 3. Mobile & Cross-Device Testing
 To visualize and test the application on a physical mobile device or tablet in real-time, expose the Vite server to your local area network (LAN):
+
 ```npm run dev -- --host```
+
 *Note: Ensure your testing device is connected to the same Wi-FI network as your development machine.*
