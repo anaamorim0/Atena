@@ -591,6 +591,29 @@ body {
   display: block; 
 }
 
+/* Bottom loader */
+.end-loader {
+    height: 40px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* No Results found */
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #8E8E93;
+}
+
+/* Popular Movies Label */
+.popular-movies-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #8E8E93;
+    display: block;
+    margin-bottom: 20px;
+}
+
 /* --------------------------------------------------------------*/
 /* Movie/Series Details Page */
 

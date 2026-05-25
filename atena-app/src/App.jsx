@@ -11,8 +11,6 @@ import Chats from './pages/Chats'
 import BottomNav from './components/BottomNav'
 import Header from './components/Header'
 import MovieDetails from './pages/MovieDetails'
-import MovieList from './components/MovieList'
-
 import MediaPage from './components/MediaPage'
 import { MOVIES_DATA } from './data/mockData'
 

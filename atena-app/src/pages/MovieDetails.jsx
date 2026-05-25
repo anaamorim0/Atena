@@ -11,11 +11,6 @@ function MovieDetails() {
     return (
         <div className="movie-details-page">
             <div className="details-header">
-                {/*
-                <button className="back-btn" onClick={() => navigate(-1)}>
-                    <img src={arrowIcon} alt="Back" className="arrow-icon" style={{ transform: 'rotate(180deg)' }} />
-                </button>
-                */}
 
                 <div className="backdrop-background">
                     <img 

@@ -3,38 +3,38 @@ import { useNavigate } from 'react-router-dom';
 import { getPopularMovies } from '../services/tmdb'; 
 
 function MediaPage({ searchQuery }) {
-    const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState([]);   // film list
+    const [loading, setLoading] = useState(true);   // is it loading?
+    const [filter, setFilter] = useState(null);   // active filter (Watched, To Watch, ...)
+    const [page, setPage] = useState(1);   // current page (infinite scroll)
+    const [fetchingMore, setFetchingMore] = useState(false);   // is it fetching more for infinite scroll?
+
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true); 
-    const [filter, setFilter] = useState(null);
-    
-    const [page, setPage] = useState(1);
-    const [fetchingMore, setFetchingMore] = useState(false);
-    const loaderRef = useRef(null);
+    const loaderRef = useRef(null);   // ref for infinite scroll trigger
 
     useEffect(() => {
         const fetchMovies = async () => {
             if (page === 1) setLoading(true);
             else setFetchingMore(true);
 
-            const data = await getPopularMovies(page); 
-            
-            setMovies((prevMovies) => [...prevMovies, ...(data || [])]); 
-            
+            const data = await getPopularMovies(page);
+            setMovies((prevMovies) => [...prevMovies, ...(data.results || [])]);    // append new movies to existing list
+
             setLoading(false);
             setFetchingMore(false);
         };
+
         fetchMovies();
-    }, [page]); 
+    }, [page]);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
+        const observer = new IntersectionObserver(      // detect when bottom is visible and activate infinite scroll
             (entries) => {
                 if (entries[0].isIntersecting && !loading && !fetchingMore) {
-                    setPage((prevPage) => prevPage + 1); 
-                }
+                    setPage((prevPage) => prevPage + 1);   // load next page when bottom is visible
+                }  
             },
-            { threshold: 1.0 }
+            { threshold: 1 }
         );
 
         if (loaderRef.current) {
@@ -45,15 +45,17 @@ function MediaPage({ searchQuery }) {
             if (loaderRef.current) {
                 observer.unobserve(loaderRef.current);
             }
-        };
+        }
     }, [loading, fetchingMore]);
 
-    const filteredMovies = movies.filter(movie => 
-        movie.title?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredMovies = movies.filter(movie => {
+        if (!searchQuery) return true;   // if no search query, show all
+        return movie.title.toLowerCase().includes(searchQuery.toLowerCase());   // filter by title
+    });
 
-    if (loading) return <main className="content"><p>Loading movies from TMDB...</p></main>;
-    
+    if (loading) return <main className="content"><p>Loading movies...</p></main>;
+
+
     return (
         <main className="content">
             <div className="media-container">
@@ -74,16 +76,7 @@ function MediaPage({ searchQuery }) {
                         <div className={filter ? "counter-card" : ""}>
                             {filter && <span className="count-number">{filteredMovies.length}</span>}
                             
-                            <span 
-                                className={filter ? "count-label" : ""}
-                                style={!filter ? { 
-                                    fontSize: '1rem', 
-                                    fontWeight: 'bold', 
-                                    color: '#8E8E93', 
-                                    display: 'block',
-                                    marginBottom: '20px'
-                                } : {}}
-                            >
+                            <span className={filter? "count-label" : "popular-movies-label"}>
                                 {filter || 'Popular Movies'}
                             </span>
                         </div>
@@ -104,12 +97,12 @@ function MediaPage({ searchQuery }) {
                             ))}
                         </div>
 
-                        <div ref={loaderRef} style={{ height: "40px", margin: "20px 0", textAlign: "center" }}>
-                            {fetchingMore && <p style={{ color: '#aaa' }}>Loading more movies...</p>}
+                        <div ref={loaderRef} className="end-loader">
+                            {fetchingMore && <p>Loading more movies...</p>}
                         </div>
 
                         {filteredMovies.length === 0 && (
-                            <p style={{ textAlign: 'center', marginTop: '20px' }}>
+                            <p className="no-results">
                                 No results found for "{searchQuery}"
                             </p>
                         )}

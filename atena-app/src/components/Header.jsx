@@ -1,8 +1,7 @@
-import { useState, usEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom"
 import userIcon from "../assets/icons/user-icon.png"
 import searchIcon from "../assets/icons/search-icon.png"
-import { useEffect } from "react";
 
 function Header({ onSearch}) {
     const location = useLocation();

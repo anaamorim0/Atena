@@ -1,13 +1,14 @@
-const API_KEY = import.meta.env.VITE_TMBD_API_KEY;
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-export const getPopularMovies = async () => {
+console.log('KEY:', import.meta.env.VITE_TMDB_API_KEY);
+export const getPopularMovies = async (page) => {
     try {
         const response = await fetch(
-            `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+            `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`
         );
         const data = await response.json();
-        return data.results;
+        return data;
     } catch (error) {
         console.error("Error fetching movies:", error);
         return [];
